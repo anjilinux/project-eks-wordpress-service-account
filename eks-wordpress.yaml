@@ -168,6 +168,47 @@ Parameters:
     Default: subnet-7f3e2325
 
 
+  ###
+  # DBs credentials
+  ###
+
+  WPProdDBMasterCredentialsName:
+    Description: >
+      Name of the secret that holds Wordpress Master production database
+      credentials.
+    Type: String
+    Default: WPProdDBMasterCredentials
+
+  WPProdDBSecretUsernameKey:
+    Description: >
+      Name of the Wordpress productionn database Master username key.
+    Type: String
+    Default: Username
+
+  WPProdDBSecretPasswordKey:
+    Description: >
+      Name of the the Wordpress production database Master password key.
+    Type: String
+    Default: Password
+
+  WPDevDBMasterCredentialsName:
+    Description: >
+      Name of the secret that holds Wordpress Master development database
+      credentials.
+    Type: String
+    Default: WPDevDBMasterCredentials
+
+  WPDevDBSecretUsernameKey:
+    Description: >
+      Name of the the Wordpress development database Master username key.
+    Type: String
+    Default: Username
+
+  WPDevDBSecretPasswordKey:
+    Description: >
+      Name of the the Wordpress development database Master password key.
+    Type: String
+    Default: Password
 
 ##############################
 #
@@ -382,3 +423,37 @@ Resources:
                      --stack  ${AWS::StackName} \
                      --resource NodeGroup  \
                      --region ${AWS::Region}
+
+  ###
+  #
+  # Databases
+  #
+  ###
+
+  ProductionDBCluster:
+    Type: "AWS::RDS::DBCluster"
+    Properties:
+      AvailabilityZones:
+        - !Ref SubnetA
+        - !Ref SubnetB
+      DatabaseName: WPProd
+      DBClusterIdentifier: wp-prod-cluster
+      DBClusterParameterGroupName: default.aurora-postgresql10
+      # EnableIAMDatabaseAuthentication: true
+      Engine: aurora-postgresql
+      EngineVersion: 10.6
+      MasterUsername: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretUsernameKey}}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretPasswordKey}}}'
+      Port: 5432
+      StorageEncrypted: true
+
+  ProductionDBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: true
+      DBClusterIdentifier: !Ref ProductionDBCluster
+      DBInstanceClass: db.r4.large
+      DBInstanceIdentifier: wp-prod-instance
+      Engine: aurora
+      PubliclyAccessible: false
