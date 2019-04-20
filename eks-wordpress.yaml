@@ -433,9 +433,9 @@ Resources:
   ProductionDBCluster:
     Type: "AWS::RDS::DBCluster"
     Properties:
-      AvailabilityZones:
-        - !Ref SubnetA
-        - !Ref SubnetB
+      # AvailabilityZones:
+      #   - !Ref SubnetA
+      #   - !Ref SubnetB
       DatabaseName: WPProd
       DBClusterIdentifier: wp-prod-cluster
       DBClusterParameterGroupName: default.aurora-postgresql10
