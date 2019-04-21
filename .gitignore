@@ -1,2 +1,3 @@
 aws-auth-cm.yaml
 eks-access-user.yaml
+wordpress_parameters.yaml
