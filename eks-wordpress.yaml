@@ -476,3 +476,17 @@ Resources:
       OptionGroupName: default:aurora-postgresql-10
       Engine: aurora-postgresql
       PubliclyAccessible: false
+
+
+
+##############################
+#
+# Outputs
+#
+##############################
+
+Outputs:
+  DeploymentRole:
+    Description: >
+      Name of the user that will be able to administer EKS.
+    Value: !Ref EKSAccessUser
