@@ -421,7 +421,7 @@ Resources:
         MinInstancesInService: !Ref NodeAutoScalingGroupDesiredCapacity
         PauseTime: PT5M
 
-  NodeLaunchConfig:
+  NodeLaunchConfiguration:
     DependsOn: EksCluster
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
