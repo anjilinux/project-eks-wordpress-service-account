@@ -457,5 +457,5 @@ Resources:
       DBInstanceIdentifier: wp-prod-instance
       DBParameterGroupName: default.aurora-postgresql10
       OptionGroupName: default:aurora-postgresql-10
-      Engine: aurora
+      Engine: aurora-postgresql
       PubliclyAccessible: false
