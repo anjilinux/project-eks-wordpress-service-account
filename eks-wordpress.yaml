@@ -263,6 +263,23 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
 
   ###
+  # User that can manipulate Kubernetes via cli
+  ###
+  EKSAccessUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: eks-access
+      Policies:
+        -
+          PolicyName: Switch_to_EKS_cluster_master_policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              Effect: Allow
+              Action: sts:AssumeRole
+              Resource: !ImportValue stack-deployment-role
+
+  ###
   #
   # Security groups
   #
