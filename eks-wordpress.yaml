@@ -355,7 +355,7 @@ Resources:
   PrivateSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-east-1e
+      AvailabilityZone: us-east-1a
       CidrBlock: 172.31.200.0/24
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
@@ -363,7 +363,7 @@ Resources:
   PrivateSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: us-east-1f
+      AvailabilityZone: us-east-1b
       CidrBlock: 172.31.201.0/24
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
