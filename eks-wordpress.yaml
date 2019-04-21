@@ -9,14 +9,6 @@ Description: >
 #
 ##############################
 
-# Parameters:
-
-##############################
-#
-# Resources
-#
-##############################
-
 Parameters:
 
   KeyName:
@@ -156,17 +148,6 @@ Parameters:
     Description: The VPC of the worker instances
     Type: AWS::EC2::VPC::Id
     Default: vpc-8b25eef3
-
-  SubnetA:
-    Description: The subnet where workers can be created and kubernetes will be available.
-    Type: String
-    Default: subnet-224e9569
-
-  SubnetB:
-    Description: The subnet where workers can be created and kubernetes will be available
-    Type: String
-    Default: subnet-7f3e2325
-
 
   ###
   # DBs credentials
@@ -366,6 +347,26 @@ Resources:
       ToPort: 443
       FromPort: 443
 
+  ###
+  #
+  # Private subnets
+  #
+  ###
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1e
+      CidrBlock: 192.168.0.0/24
+      MapPublicIpOnLaunch: false
+      VpcId: !Ref VpcId
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1f
+      CidrBlock: 192.168.1.0/24
+      MapPublicIpOnLaunch: false
+      VpcId: !Ref VpcId
 
   ###
   #
@@ -379,8 +380,8 @@ Resources:
       Name: !Ref ClusterName
       ResourcesVpcConfig:
         SubnetIds:
-          - !Ref SubnetA
-          - !Ref SubnetB
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
       RoleArn: !GetAtt EksClusterRole.Arn
 
   ###
@@ -398,8 +399,8 @@ Resources:
       MinSize: !Ref NodeAutoScalingGroupMinSize
       MaxSize: !Ref NodeAutoScalingGroupMaxSize
       VPCZoneIdentifier:
-        - !Ref SubnetA
-        - !Ref SubnetB
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
       Tags:
         - Key: Name
           Value: !Sub ${ClusterName}-${NodeGroupName}-Node
