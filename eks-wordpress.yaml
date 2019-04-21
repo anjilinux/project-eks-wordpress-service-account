@@ -458,20 +458,22 @@ Resources:
   ###
 
   ProductionDBCluster:
-    Type: "AWS::RDS::DBCluster"
+    Type: AWS::RDS::DBCluster
     Properties:
-      # AvailabilityZones:
-      #   - !Ref SubnetA
-      #   - !Ref SubnetB
       DatabaseName: WPProd
       DBClusterIdentifier: wp-prod-cluster
-      DBClusterParameterGroupName: default.aurora-postgresql10
+      DBClusterParameterGroupName: default.aurora5.6
       # EnableIAMDatabaseAuthentication: true
-      Engine: aurora-postgresql
-      EngineVersion: 10.6
+      Engine: aurora
+      EngineMode: serverless
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 4
+        MinCapacity: 2
+        SecondsUntilAutoPause: 300
       MasterUsername: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretUsernameKey}}}'
       MasterUserPassword: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretPasswordKey}}}'
-      Port: 5432
+      Port: 3306
       StorageEncrypted: true
 
   ProductionDBInstance:
@@ -480,10 +482,10 @@ Resources:
       AllowMajorVersionUpgrade: false
       AutoMinorVersionUpgrade: true
       DBClusterIdentifier: !Ref ProductionDBCluster
-      DBInstanceClass: db.r4.large
+      DBInstanceClass: db.t2.small
       DBInstanceIdentifier: wp-prod-instance
-      DBParameterGroupName: default.aurora-postgresql10
-      OptionGroupName: default:aurora-postgresql-10
+      # DBParameterGroupName: default.aurora5.6
+      # OptionGroupName: default:aurora-postgresql-10
       Engine: aurora-postgresql
       PubliclyAccessible: false
 
