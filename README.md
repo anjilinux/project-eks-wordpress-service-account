@@ -58,6 +58,8 @@ Also, add `sts:assumeRole` to the deployment role's trust relationship just afte
   "Action": "sts:AssumeRole"
 }
 ```
+The user ARN is available in this stack's Output section.
+
 Then, make sure the `kubectl` and `aws-iam-authenticator` are available in your
 terminal. You can follow this link
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html section
