@@ -488,5 +488,5 @@ Resources:
 Outputs:
   DeploymentRole:
     Description: >
-      Name of the user that will be able to administer EKS.
-    Value: !Ref EKSAccessUser
+      ARN of the user that will be able to administer EKS.
+    Value: !GetAtt EKSAccessUser.Arn
