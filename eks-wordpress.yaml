@@ -130,7 +130,7 @@ Parameters:
   NodeAutoScalingGroupDesiredCapacity:
     Description: Desired capacity of Node Group ASG.
     Type: Number
-    Default: 0
+    Default: 1
 
   NodeVolumeSize:
     Description: Node volume size
@@ -490,3 +490,8 @@ Outputs:
     Description: >
       ARN of the user that will be able to administer EKS.
     Value: !GetAtt EKSAccessUser.Arn
+
+  InstanceProfileARN:
+    Description: >
+      Arn of the profile attached to node instances.
+    Value: !GetAtt NodeInstanceProfile.Arn
