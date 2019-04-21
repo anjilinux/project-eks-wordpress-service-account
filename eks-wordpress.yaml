@@ -356,7 +356,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1e
-      CidrBlock: 192.168.0.0/24
+      CidrBlock: 172.31.200.0/24
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
 
@@ -364,7 +364,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1f
-      CidrBlock: 192.168.1.0/24
+      CidrBlock: 172.31.201.0/24
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
 
