@@ -455,6 +455,7 @@ Resources:
       DBClusterIdentifier: !Ref ProductionDBCluster
       DBInstanceClass: db.r4.large
       DBInstanceIdentifier: wp-prod-instance
-      DBParameterGroupName: aurora-postgresql9.6
+      DBParameterGroupName: default.aurora-postgresql10
+      OptionGroupName: default:aurora-postgresql-10
       Engine: aurora
       PubliclyAccessible: false
