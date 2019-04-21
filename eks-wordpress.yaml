@@ -476,18 +476,18 @@ Resources:
       Port: 3306
       StorageEncrypted: true
 
-  ProductionDBInstance:
-    Type: AWS::RDS::DBInstance
-    Properties:
-      AllowMajorVersionUpgrade: false
-      AutoMinorVersionUpgrade: true
-      DBClusterIdentifier: !Ref ProductionDBCluster
-      DBInstanceClass: db.t2.small
-      DBInstanceIdentifier: wp-prod-db-instance
-      # DBParameterGroupName: default.aurora5.6
-      # OptionGroupName: default:aurora-postgresql-10
-      Engine: aurora-postgresql
-      PubliclyAccessible: false
+  # ProductionDBInstance:
+  #   Type: AWS::RDS::DBInstance
+  #   Properties:
+  #     AllowMajorVersionUpgrade: false
+  #     AutoMinorVersionUpgrade: true
+  #     DBClusterIdentifier: !Ref ProductionDBCluster
+  #     DBInstanceClass: db.t2.small
+  #     DBInstanceIdentifier: wp-prod-db-instance
+  #     # DBParameterGroupName: default.aurora5.6
+  #     # OptionGroupName: default:aurora-postgresql-10
+  #     Engine: aurora-postgresql
+  #     PubliclyAccessible: false
 
 
 
