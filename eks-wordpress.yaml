@@ -120,7 +120,7 @@ Parameters:
   NodeAutoScalingGroupMinSize:
     Description: Minimum size of Node Group ASG.
     Type: Number
-    Default: 1
+    Default: 0
 
   NodeAutoScalingGroupMaxSize:
     Description: Maximum size of Node Group ASG. Set to at least 1 greater than NodeAutoScalingGroupDesiredCapacity.
@@ -130,7 +130,7 @@ Parameters:
   NodeAutoScalingGroupDesiredCapacity:
     Description: Desired capacity of Node Group ASG.
     Type: Number
-    Default: 2
+    Default: 0
 
   NodeVolumeSize:
     Description: Node volume size
@@ -441,7 +441,7 @@ Resources:
       DBClusterParameterGroupName: default.aurora-postgresql10
       # EnableIAMDatabaseAuthentication: true
       Engine: aurora-postgresql
-      EngineVersion: 10.6
+      # EngineVersion: 10.6
       MasterUsername: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretUsernameKey}}}'
       MasterUserPassword: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretPasswordKey}}}'
       Port: 5432
