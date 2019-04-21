@@ -427,7 +427,7 @@ Resources:
     DependsOn: EksCluster
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
-      AssociatePublicIpAddress: false
+      AssociatePublicIpAddress: true
       IamInstanceProfile: !Ref NodeInstanceProfile
       ImageId: !Ref NodeImageId
       InstanceType: !Ref NodeInstanceType
