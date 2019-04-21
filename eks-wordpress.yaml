@@ -483,7 +483,7 @@ Resources:
       AutoMinorVersionUpgrade: true
       DBClusterIdentifier: !Ref ProductionDBCluster
       DBInstanceClass: db.t2.small
-      DBInstanceIdentifier: wp-prod-instance
+      DBInstanceIdentifier: wp-prod-db-instance
       # DBParameterGroupName: default.aurora5.6
       # OptionGroupName: default:aurora-postgresql-10
       Engine: aurora-postgresql
