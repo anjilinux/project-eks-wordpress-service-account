@@ -494,4 +494,4 @@ Outputs:
   InstanceProfileARN:
     Description: >
       Arn of the profile attached to node instances.
-    Value: !GetAtt NodeInstanceProfile.Arn
+    Value: !GetAtt NodeInstanceRole.Arn
