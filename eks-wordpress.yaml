@@ -438,7 +438,7 @@ Resources:
       #   - !Ref SubnetB
       DatabaseName: WPProd
       DBClusterIdentifier: wp-prod-cluster
-      DBClusterParameterGroupName: default.aurora-postgresql
+      DBClusterParameterGroupName: default.aurora-postgresql10
       # EnableIAMDatabaseAuthentication: true
       Engine: aurora-postgresql
       # EngineVersion: 10.6
@@ -455,5 +455,6 @@ Resources:
       DBClusterIdentifier: !Ref ProductionDBCluster
       DBInstanceClass: db.r4.large
       DBInstanceIdentifier: wp-prod-instance
+      DBParameterGroupName: default.aurora-postgresql10
       Engine: aurora
       PubliclyAccessible: false
