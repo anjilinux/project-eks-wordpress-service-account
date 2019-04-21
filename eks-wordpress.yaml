@@ -360,8 +360,9 @@ Resources:
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
       Tags:
-        Key: Name
-        Value: PrivateSubnetA
+        -
+          Key: Name
+          Value: PrivateSubnetA
 
 
   PrivateSubnetB:
@@ -372,8 +373,9 @@ Resources:
       MapPublicIpOnLaunch: false
       VpcId: !Ref VpcId
       Tags:
-        Key: Name
-        Value: PrivateSubnetB
+        -
+          Key: Name
+          Value: PrivateSubnetB
 
   ###
   #
@@ -421,7 +423,7 @@ Resources:
         MinInstancesInService: !Ref NodeAutoScalingGroupDesiredCapacity
         PauseTime: PT5M
 
-  NodeLaunchConfiguration:
+  NodeLaunchConfig:
     DependsOn: EksCluster
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
