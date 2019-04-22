@@ -132,7 +132,7 @@ Parameters:
   ClusterName:
     Description: EKS cluster name.
     Type: String
-    Default: eks-wordpress-cluster
+    Default: eks-wordpress-cluster-private-vpc
 
   BootstrapArguments:
     Description: Arguments to pass to the bootstrap script. See files/bootstrap.sh in https://github.com/awslabs/amazon-eks-ami
@@ -144,10 +144,10 @@ Parameters:
     Type: String
     Default: node-group
 
-  VpcId:
-    Description: The VPC of the worker instances
-    Type: AWS::EC2::VPC::Id
-    Default: vpc-8b25eef3
+  # VpcId:
+  #   Description: The VPC of the worker instances
+  #   Type: AWS::EC2::VPC::Id
+  #   Default: vpc-8b25eef3
 
   ###
   # DBs credentials
@@ -270,13 +270,13 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Cluster communication with worker nodes
-      VpcId: !Ref VpcId
+      VpcId: !Ref Vpc
 
   NodeSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Security group for all nodes in the cluster
-      VpcId: !Ref VpcId
+      VpcId: !Ref Vpc
       Tags:
         - Key: !Sub kubernetes.io/cluster/${ClusterName}
           Value: owned
@@ -347,18 +347,60 @@ Resources:
       ToPort: 443
       FromPort: 443
 
+
   ###
   #
-  # Private subnets
+  # VPC
   #
+  ###
+
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 172.16.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        -
+          Key: Name
+          Value: Private vpc for Kubernetes
+
+###
+# Public subnets
+###
+PublicSubnetA:
+  Type: AWS::EC2::Subnet
+  Properties:
+    AvailabilityZone: us-east-1a
+    CidrBlock: 172.16.0.0/24
+    VpcId: !Ref Vpc
+    Tags:
+      -
+        Key: Name
+        Value: PublicSubnetA
+
+
+PublicSubnetB:
+  Type: AWS::EC2::Subnet
+  Properties:
+    AvailabilityZone: us-east-1b
+    CidrBlock: 172.16.1.0/24
+    VpcId: !Ref Vpc
+    Tags:
+      -
+        Key: Name
+        Value: PublicSubnetB
+
+  ###
+  # Private subnets
   ###
   PrivateSubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1a
-      CidrBlock: 172.31.200.0/24
+      CidrBlock: 172.16.100.0/24
       MapPublicIpOnLaunch: false
-      VpcId: !Ref VpcId
+      VpcId: !Ref Vpc
       Tags:
         -
           Key: Name
@@ -369,13 +411,110 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1b
-      CidrBlock: 172.31.201.0/24
+      CidrBlock: 172.16.101.0/24
       MapPublicIpOnLaunch: false
-      VpcId: !Ref VpcId
+      VpcId: !Ref Vpc
       Tags:
         -
           Key: Name
           Value: PrivateSubnetB
+
+###
+# Internet gateway
+###
+  IntergetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        -
+          Key: Name
+          Value: KubernetesInternetGateway
+
+###
+# Route tables
+###
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: PublicRouteTable
+
+  PublicRoute:
+    DependsOn: IntergetGateway
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref IntergetGateway
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateRouteTableA:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTableA
+
+  PrivateRouteTableB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTableB
+
+  PrivateRouteA:
+    DependsOn: NatSubnetA
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatSubnetA
+      RouteTableId: !Ref PrivateRouteTableA
+
+  PrivateRouteB:
+    DependsOn: NatSubnetB
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatSubnetB
+      RouteTableId: !Ref PrivateRouteTableB
+
+###
+# NATs
+###
+  ElasticIpA:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  ElasticIpB:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NatSubnetA:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !Ref ElasticIpA
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        -
+          Key: Name
+          Value: NatSubnetA
+
+  NatSubnetB:
+    Type: AWS::EC2::NatGateway
+    Properties: sf
+      AllocationId: !Ref ElasticIpB
+      SubnetId: !Ref PublicSubnetB
+      Tags:
+        -
+          Key: Name
+          Value: NatSubnetB
+
+
 
   ###
   #
