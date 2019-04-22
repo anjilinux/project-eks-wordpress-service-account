@@ -24,7 +24,7 @@ Parameters:
   NodeInstanceType:
     Description: EC2 instance type for the node instances
     Type: String
-    Default: t2.medium
+    Default: t2.large
     ConstraintDescription: Must be a valid EC2 instance type
     AllowedValues:
       - t2.medium
@@ -371,7 +371,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1a
-      CidrBlock: 172.16.0.0/24
+      CidrBlock: 172.16.0.0/22
       VpcId: !Ref Vpc
       Tags:
         -
@@ -383,7 +383,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1b
-      CidrBlock: 172.16.1.0/24
+      CidrBlock: 172.16.4.0/22
       VpcId: !Ref Vpc
       Tags:
         -
@@ -397,7 +397,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1a
-      CidrBlock: 172.16.100.0/24
+      CidrBlock: 172.16.100.0/22
       MapPublicIpOnLaunch: false
       VpcId: !Ref Vpc
       Tags:
@@ -410,7 +410,7 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: us-east-1b
-      CidrBlock: 172.16.101.0/24
+      CidrBlock: 172.16.104.0/22
       MapPublicIpOnLaunch: false
       VpcId: !Ref Vpc
       Tags:
