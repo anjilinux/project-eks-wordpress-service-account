@@ -440,6 +440,8 @@ Resources:
   ###
   # Route tables
   ###
+
+  # Public
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -458,7 +460,20 @@ Resources:
       GatewayId: !Ref IntergetGateway
       RouteTableId: !Ref PublicRouteTable
 
+  PublicRouteTableToPublicSubnetAAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnetA
 
+  PublicRouteTableToPublicSubnetBAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      SubnetId: !Ref PublicSubnetB
+
+
+  # Private A
   PrivateRouteTableA:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -475,7 +490,13 @@ Resources:
       NatGatewayId: !Ref NatSubnetA
       RouteTableId: !Ref PrivateRouteTableA
 
+  PrivateRouteTableAToPrivateSubnetAAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableA
+      SubnetId: !Ref PrivateSubnetA
 
+  # Private B
   PrivateRouteTableB:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -492,6 +513,12 @@ Resources:
       NatGatewayId: !Ref NatSubnetB
       RouteTableId: !Ref PrivateRouteTableB
 
+  PrivateRouteTableBToPrivateSubnetBAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableB
+      SubnetId: !Ref PrivateSubnetB
+
   ###
   # NATs
   ###
@@ -506,7 +533,6 @@ Resources:
       Domain: vpc
 
   NatSubnetA:
-    # DependsOn: ElasticIpA
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt ElasticIpA.AllocationId
@@ -517,7 +543,6 @@ Resources:
           Value: NatSubnetA
 
   NatSubnetB:
-    # DependsOn: ElasticIpB
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt ElasticIpB.AllocationId
