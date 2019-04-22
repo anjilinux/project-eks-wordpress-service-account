@@ -481,9 +481,9 @@ PublicSubnetB:
       NatGatewayId: !Ref NatSubnetB
       RouteTableId: !Ref PrivateRouteTableB
 
-###
-# NATs
-###
+  ###
+  # NATs
+  ###
   ElasticIpA:
     Type: AWS::EC2::EIP
     Properties:
@@ -506,7 +506,7 @@ PublicSubnetB:
 
   NatSubnetB:
     Type: AWS::EC2::NatGateway
-    Properties: sf
+    Properties: 
       AllocationId: !Ref ElasticIpB
       SubnetId: !Ref PublicSubnetB
       Tags:
