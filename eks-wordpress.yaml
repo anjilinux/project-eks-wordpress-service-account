@@ -506,6 +506,7 @@ Resources:
       Domain: vpc
 
   NatSubnetA:
+    DependsOn: ElasticIpA
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !Ref ElasticIpA
@@ -516,6 +517,7 @@ Resources:
           Value: NatSubnetA
 
   NatSubnetB:
+    DependsOn: ElasticIpB
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !Ref ElasticIpB
