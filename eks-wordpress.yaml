@@ -430,6 +430,13 @@ Resources:
           Key: Name
           Value: KubernetesInternetGateway
 
+  AttachGatewayToVpc:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref IntergetGateway
+      VpcId: !Ref Vpc
+
+
   ###
   # Route tables
   ###
@@ -442,12 +449,15 @@ Resources:
           Value: PublicRouteTable
 
   PublicRoute:
-    DependsOn: IntergetGateway
+    DependsOn:
+      - IntergetGateway
+      - AttachGatewayToVpc
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IntergetGateway
       RouteTableId: !Ref PublicRouteTable
+
 
   PrivateRouteTableA:
     Type: AWS::EC2::RouteTable
@@ -457,14 +467,6 @@ Resources:
         - Key: Name
           Value: PrivateRouteTableA
 
-  PrivateRouteTableB:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref Vpc
-      Tags:
-        - Key: Name
-          Value: PrivateRouteTableB
-
   PrivateRouteA:
     DependsOn: NatSubnetA
     Type: AWS::EC2::Route
@@ -472,6 +474,15 @@ Resources:
       DestinationCidrBlock: 0.0.0.0/0
       NatGatewayId: !Ref NatSubnetA
       RouteTableId: !Ref PrivateRouteTableA
+
+
+  PrivateRouteTableB:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: PrivateRouteTableB
 
   PrivateRouteB:
     DependsOn: NatSubnetB
