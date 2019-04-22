@@ -506,10 +506,10 @@ Resources:
       Domain: vpc
 
   NatSubnetA:
-    DependsOn: ElasticIpA
+    # DependsOn: ElasticIpA
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !Ref ElasticIpA
+      AllocationId: !GetAtt ElasticIpA.AllocationId
       SubnetId: !Ref PublicSubnetA
       Tags:
         -
@@ -517,10 +517,10 @@ Resources:
           Value: NatSubnetA
 
   NatSubnetB:
-    DependsOn: ElasticIpB
+    # DependsOn: ElasticIpB
     Type: AWS::EC2::NatGateway
     Properties:
-      AllocationId: !Ref ElasticIpB
+      AllocationId: !GetAtt ElasticIpB.AllocationId
       SubnetId: !Ref PublicSubnetB
       Tags:
         -
