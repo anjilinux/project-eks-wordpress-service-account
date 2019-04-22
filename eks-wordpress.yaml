@@ -499,13 +499,13 @@ Resources:
         - Key: Name
           Value: PrivateRouteTableA
 
-  # PrivateRouteA:
-  #   DependsOn: NatSubnetA
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId: !Ref NatSubnetA
-  #     RouteTableId: !Ref PrivateRouteTableA
+  PrivateRouteA:
+    DependsOn: NatSubnetA
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatSubnetA
+      RouteTableId: !Ref PrivateRouteTableA
 
   PrivateRouteTableAToPrivateSubnetAAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -522,13 +522,13 @@ Resources:
         - Key: Name
           Value: PrivateRouteTableB
 
-  # PrivateRouteB:
-  #   DependsOn: NatSubnetB
-  #   Type: AWS::EC2::Route
-  #   Properties:
-  #     DestinationCidrBlock: 0.0.0.0/0
-  #     NatGatewayId: !Ref NatSubnetB
-  #     RouteTableId: !Ref PrivateRouteTableB
+  PrivateRouteB:
+    DependsOn: NatSubnetB
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatSubnetB
+      RouteTableId: !Ref PrivateRouteTableB
 
   PrivateRouteTableBToPrivateSubnetBAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -549,25 +549,25 @@ Resources:
     Properties:
       Domain: vpc
 
-  # NatSubnetA:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId: !GetAtt ElasticIpA.AllocationId
-  #     SubnetId: !Ref PublicSubnetA
-  #     Tags:
-  #       -
-  #         Key: Name
-  #         Value: NatPrivateSubnetA
+  NatSubnetA:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt ElasticIpA.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        -
+          Key: Name
+          Value: NatPrivateSubnetA
 
-  # NatSubnetB:
-  #   Type: AWS::EC2::NatGateway
-  #   Properties:
-  #     AllocationId: !GetAtt ElasticIpB.AllocationId
-  #     SubnetId: !Ref PublicSubnetB
-  #     Tags:
-  #       -
-  #         Key: Name
-  #         Value: NatPrivateSubnetB
+  NatSubnetB:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt ElasticIpB.AllocationId
+      SubnetId: !Ref PublicSubnetB
+      Tags:
+        -
+          Key: Name
+          Value: NatPrivateSubnetB
 
 
 
