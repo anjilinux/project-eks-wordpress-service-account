@@ -365,31 +365,31 @@ Resources:
           Key: Name
           Value: Private vpc for Kubernetes
 
-###
-# Public subnets
-###
-PublicSubnetA:
-  Type: AWS::EC2::Subnet
-  Properties:
-    AvailabilityZone: us-east-1a
-    CidrBlock: 172.16.0.0/24
-    VpcId: !Ref Vpc
-    Tags:
-      -
-        Key: Name
-        Value: PublicSubnetA
+  ###
+  # Public subnets
+  ###
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1a
+      CidrBlock: 172.16.0.0/24
+      VpcId: !Ref Vpc
+      Tags:
+        -
+          Key: Name
+          Value: PublicSubnetA
 
 
-PublicSubnetB:
-  Type: AWS::EC2::Subnet
-  Properties:
-    AvailabilityZone: us-east-1b
-    CidrBlock: 172.16.1.0/24
-    VpcId: !Ref Vpc
-    Tags:
-      -
-        Key: Name
-        Value: PublicSubnetB
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1b
+      CidrBlock: 172.16.1.0/24
+      VpcId: !Ref Vpc
+      Tags:
+        -
+          Key: Name
+          Value: PublicSubnetB
 
   ###
   # Private subnets
@@ -419,9 +419,9 @@ PublicSubnetB:
           Key: Name
           Value: PrivateSubnetB
 
-###
-# Internet gateway
-###
+  ###
+  # Internet gateway
+  ###
   IntergetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
@@ -430,9 +430,9 @@ PublicSubnetB:
           Key: Name
           Value: KubernetesInternetGateway
 
-###
-# Route tables
-###
+  ###
+  # Route tables
+  ###
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -506,7 +506,7 @@ PublicSubnetB:
 
   NatSubnetB:
     Type: AWS::EC2::NatGateway
-    Properties: 
+    Properties:
       AllocationId: !Ref ElasticIpB
       SubnetId: !Ref PublicSubnetB
       Tags:
