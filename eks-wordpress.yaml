@@ -131,7 +131,7 @@ Parameters:
   ClusterName:
     Description: EKS cluster name.
     Type: String
-    Default: eks-wordpress-cluster-private-vpc
+    Default: eks-wordpress-cluster
 
   BootstrapArguments:
     Description: Arguments to pass to the bootstrap script. See files/bootstrap.sh in https://github.com/awslabs/amazon-eks-ami
