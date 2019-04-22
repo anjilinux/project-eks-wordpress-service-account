@@ -421,13 +421,13 @@ Resources:
       AutoScalingRollingUpdate:
         MaxBatchSize: 1
         MinInstancesInService: !Ref NodeAutoScalingGroupDesiredCapacity
-        PauseTime: PT5M
+        # PauseTime: PT5M
 
   NodeLaunchConfig:
     DependsOn: EksCluster
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
-      AssociatePublicIpAddress: true
+      AssociatePublicIpAddress: false
       IamInstanceProfile: !Ref NodeInstanceProfile
       ImageId: !Ref NodeImageId
       InstanceType: !Ref NodeInstanceType
