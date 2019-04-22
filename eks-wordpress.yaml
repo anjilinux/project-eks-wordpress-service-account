@@ -377,6 +377,9 @@ Resources:
         -
           Key: Name
           Value: PublicSubnetA
+        -
+          Key: !Sub kubernetes.io/cluster/${ClusterName}
+          Value: shared
 
 
   PublicSubnetB:
@@ -389,6 +392,9 @@ Resources:
         -
           Key: Name
           Value: PublicSubnetB
+        -
+          Key: !Sub kubernetes.io/cluster/${ClusterName}
+          Value: shared
 
   ###
   # Private subnets
@@ -407,6 +413,9 @@ Resources:
         -
           Key: kubernetes.io/role/internal-elb
           Value: 1
+        -
+          Key: !Sub kubernetes.io/cluster/${ClusterName}
+          Value: shared
 
 
   PrivateSubnetB:
@@ -423,6 +432,9 @@ Resources:
         -
           Key: kubernetes.io/role/internal-elb
           Value: 1
+        -
+          Key: !Sub kubernetes.io/cluster/${ClusterName}
+          Value: shared
 
   ###
   # Internet gateway
@@ -545,7 +557,7 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: NatSubnetA
+          Value: NatPrivateSubnetA-private
 
   NatSubnetB:
     Type: AWS::EC2::NatGateway
@@ -555,7 +567,7 @@ Resources:
       Tags:
         -
           Key: Name
-          Value: NatSubnetB
+          Value: NatPrivateSubnetB
 
 
 
