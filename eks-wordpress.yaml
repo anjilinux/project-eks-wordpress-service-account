@@ -680,14 +680,14 @@ Resources:
     Properties:
       DBSubnetGroupDescription: >
         Group of subnets where the database will be available
-      DBSubnetGroupName: DatabasePrivateSubnetGroup
+      DBSubnetGroupName: database_private_subnet_group
       SubnetIds:
         - !Ref PrivateSubnetA
         - !Ref PrivateSubnetB
-      # Tags:
-      #   -
-      #     Key: Name
-      #     Value: DatabasePrivateSubnetGroup
+      Tags:
+        -
+          Key: Name
+          Value: database_private_subnet_group
 
   ProductionDBCluster:
     Type: AWS::RDS::DBCluster
