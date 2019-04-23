@@ -363,6 +363,7 @@ Resources:
     DependsOn: NodeSecurityGroup
     Properties:
       Description: Allow database access from Kubernetes nodes.
+      GroupId: !Ref DBAccess
       SourceSecurityGroupId: !Ref NodeSecurityGroup
       IpProtocol: tcp
       ToPort: 3306
