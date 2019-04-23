@@ -676,7 +676,7 @@ Resources:
   ###
 
   DBSubnetGroup:
-    Type: "AWS::RDS::DBSubnetGroup"
+    Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: >
         Group of subnets where the database will be available
@@ -690,6 +690,7 @@ Resources:
 
   ProductionDBCluster:
     Type: AWS::RDS::DBCluster
+    DependsOn: DBSubnetGroup
     Properties:
       DatabaseName: WPProd
       DBClusterIdentifier: wp-prod-db
