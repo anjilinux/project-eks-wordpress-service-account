@@ -684,13 +684,14 @@ Resources:
       SubnetIds:
         - !Ref PrivateSubnetA
         - !Ref PrivateSubnetB
-      Tags:
-        - Key: Name
-          Value: DatabasePrivateSubnetGroup
+      # Tags:
+      #   -
+      #     Key: Name
+      #     Value: DatabasePrivateSubnetGroup
 
   ProductionDBCluster:
     Type: AWS::RDS::DBCluster
-    DependsOn: DBSubnetGroup
+    # DependsOn: DBSubnetGroup
     Properties:
       DatabaseName: WPProd
       DBClusterIdentifier: wp-prod-db
