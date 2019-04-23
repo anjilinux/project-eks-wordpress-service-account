@@ -692,7 +692,7 @@ Resources:
     Type: AWS::RDS::DBCluster
     Properties:
       DatabaseName: WPProd
-      DBClusterIdentifier: wp-prod-db-cluster
+      DBClusterIdentifier: wp-prod-db
       DBClusterParameterGroupName: default.aurora5.6
       # EnableIAMDatabaseAuthentication: true
       Engine: aurora
