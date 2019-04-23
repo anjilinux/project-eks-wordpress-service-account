@@ -265,6 +265,9 @@ Resources:
   #
   ###
 
+  ###
+  # EKS
+  ###
   ClusterControlPlaneSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -345,6 +348,25 @@ Resources:
       IpProtocol: tcp
       ToPort: 443
       FromPort: 443
+
+  ###
+  # Database security group
+  ###
+  DBAccess:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database access on defaut port from Kubernetes nodes.
+      VpcId: !Ref Vpc
+
+  DBAccessIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    DependsOn: NodeSecurityGroup
+    Properties:
+      Description: Allow database access from Kubernetes nodes.
+      SourceSecurityGroupId: !Ref NodeSecurityGroup
+      IpProtocol: tcp
+      ToPort: 3306
+      FromPort: 3306
 
 
   ###
@@ -652,6 +674,19 @@ Resources:
   #
   ###
 
+  DBSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupDescription: >
+        Group of subnets where the database will be available
+      DBSubnetGroupName: DatabasePrivateSubnetGroup
+      SubnetIds:
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
+      Tags:
+        - Key: Name
+          Value: DatabasePrivateSubnetGroup
+
   ProductionDBCluster:
     Type: AWS::RDS::DBCluster
     Properties:
@@ -670,6 +705,9 @@ Resources:
       MasterUserPassword: !Sub '{{resolve:secretsmanager:${WPProdDBMasterCredentialsName}:SecretString:${WPProdDBSecretPasswordKey}}}'
       Port: 3306
       StorageEncrypted: true
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DBAccess
 
   # ProductionDBInstance:
   #   Type: AWS::RDS::DBInstance
