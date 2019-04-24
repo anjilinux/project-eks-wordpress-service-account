@@ -766,7 +766,7 @@ Outputs:
       Hostname of the production database endpoint.
     Value: !GetAtt ProductionDBCluster.Endpoint.Address
 
-    DevDatabaseHostName:
-      Description: >
-        Hostname of the development database endpoint.
-      Value: !GetAtt DevelopmentDBCluster.Endpoint.Address
+  DevDatabaseHostName:
+    Description: >
+      Hostname of the development database endpoint.
+    Value: !GetAtt DevelopmentDBCluster.Endpoint.Address
