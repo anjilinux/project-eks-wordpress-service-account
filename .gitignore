@@ -1,3 +1,4 @@
+aws-auth-cm.yaml
 eks-access-user.yaml
 wordpress_parameters-prod.yaml
 wordpress_parameters-dev.yaml

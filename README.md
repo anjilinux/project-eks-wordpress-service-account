@@ -1,6 +1,11 @@
 # aws-kubernetes-wordpress
-Cloudofrmation script to deploy Wordpress on AWS EKS on production (HA) and
-development environment with Postgres Aurora.
+Cloudofrmation script to deploy Wordpress on AWS EKS on production and
+development environment with MySQL Aurora.
+
+Among many resources that will be created the most interesting of them are:
+- ECS Cluster
+- two serverless MySQL databases (prod and dev)
+- two EC2 t2.medium instances that will act as nodes
 
 This stack requires to keep Github token and database secrets in AWS Secrets
 Manager. Things to do:
@@ -14,7 +19,8 @@ There should be two keys - username and password.
 - Provide secrets' names and keys to the template's parameters before runtime.
 
 # Manual deployment
-If you're deploying this stack "by hand" comment out "EKSAccessUser" section.
+If you're deploying this stack "by hand" comment out "EKSAccessUser" section in
+"eks-wordpress.yaml" file.
 
 # Automatic deployment
 
@@ -30,8 +36,8 @@ stack and use "EKSAccessUserName" value.
 Next thing you have to do is to make sure you have CLI access to your AWS
 account using this user. You can obtain CLI credentials using IAM web console.
 
-Next, create profile that will be used with kubectl commands. You can create
-profile in your $HOME/.aws/config file. It can looks like the one below.
+Next, edit $HOME/.aws/config by adding profile that will be used with kubectl
+commands.It can looks like the one below:
 
 ```
 [default]
@@ -65,8 +71,14 @@ terminal. You can follow this link
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html section
 "Step 2: Create a kubeconfig File "
 
-On the end run (example):
-```
-aws --profile eksaccess eks --region us-east-1 update-kubeconfig --name <cluster name>
-```
-to configure kubeconfig file.
+Edit files below according to needs:
+- template-aws-auth-cm.yaml
+- template-wordpress_parameters-prod.yaml
+- template-wordpress_parameters-dev.yaml
+
+Install helm https://helm.sh/docs/using_helm/#installing-helm (don't initialise
+it).
+
+Run `init_and_install_wordpress_on_kube.sh` script in console. It will prepare
+your environment and install wordpress in production and development
+environments.

@@ -1,0 +1,15 @@
+wordpressFirstName: Development
+wordpressLastName: Development
+wordpressBlogName: Development
+
+mariadb:
+  enabled: false
+
+replicaCount: 1
+
+externalDatabase:
+  host:
+  port: 3306
+  user:
+  password:
+  database: WPDev
