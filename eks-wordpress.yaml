@@ -680,6 +680,8 @@ Resources:
     Properties:
       DBSubnetGroupDescription: >
         Group of subnets where the database will be available
+      # DBSubnetGroupName must be lowercase because it will be converted to
+      # lowercase anyway and the database cluster will not find it
       DBSubnetGroupName: database_private_subnet_group
       SubnetIds:
         - !Ref PrivateSubnetA
@@ -689,6 +691,9 @@ Resources:
           Key: Name
           Value: database_private_subnet_group
 
+  ###
+  # Production
+  ###
   ProductionDBCluster:
     Type: AWS::RDS::DBCluster
     # DependsOn: DBSubnetGroup
@@ -712,19 +717,31 @@ Resources:
       VpcSecurityGroupIds:
         - !Ref DBAccess
 
-  # ProductionDBInstance:
-  #   Type: AWS::RDS::DBInstance
-  #   Properties:
-  #     AllowMajorVersionUpgrade: false
-  #     AutoMinorVersionUpgrade: true
-  #     DBClusterIdentifier: !Ref ProductionDBCluster
-  #     DBInstanceClass: db.t2.small
-  #     DBInstanceIdentifier: wp-prod-db-instance
-  #     # DBParameterGroupName: default.aurora5.6
-  #     # OptionGroupName: default:aurora-postgresql-10
-  #     Engine: aurora-postgresql
-  #     PubliclyAccessible: false
-
+  ###
+  # Development
+  ###
+  DevelopmentDBCluster:
+    Type: AWS::RDS::DBCluster
+    # DependsOn: DBSubnetGroup
+    Properties:
+      DatabaseName: WPDev
+      DBClusterIdentifier: wp-dev-db
+      DBClusterParameterGroupName: default.aurora5.6
+      # EnableIAMDatabaseAuthentication: true
+      Engine: aurora
+      EngineMode: serverless
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 4
+        MinCapacity: 2
+        SecondsUntilAutoPause: 300
+      MasterUsername: !Sub '{{resolve:secretsmanager:${WPDevDBMasterCredentialsName}:SecretString:${WPProdDBSecretUsernameKey}}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${WPDevDBMasterCredentialsName}:SecretString:${WPProdDBSecretPasswordKey}}}'
+      Port: 3306
+      StorageEncrypted: true
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref DBAccess
 
 
 ##############################
