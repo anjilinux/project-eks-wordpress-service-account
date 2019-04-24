@@ -5,7 +5,7 @@ region in availability zone A and B.
 
 Among many resources that will be created by the template the most interesting
 of them are:
-- VPC 
+- VPC
 - two public subnets
 - two private subnets with nat gateways
 - ECS Cluster
@@ -88,6 +88,7 @@ terminal. You can follow this link
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html section
 "Step 2: Create a kubeconfig File "
 
+# Wordpress installation
 Edit files below according to needs:
 - template-aws-auth-cm.yaml
 - template-wordpress_parameters-prod.yaml
