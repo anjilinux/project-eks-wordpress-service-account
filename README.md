@@ -1,11 +1,22 @@
 # aws-kubernetes-wordpress
 Cloudofrmation script to deploy Wordpress on AWS EKS on production and
-development environment with MySQL Aurora.
+development environment with MySQL Aurora. It will be deployed in us-east-1
+region in availability zone A and B.
 
-Among many resources that will be created the most interesting of them are:
+Among many resources that will be created by the template the most interesting
+of them are:
+- VPC 
+- two public subnets
+- two private subnets with nat gateways
 - ECS Cluster
 - two serverless MySQL databases (prod and dev)
-- two EC2 t2.medium instances that will act as nodes
+- two EC2 t2.medium instances in private subnets that will act as nodes
+
+Kubernetes will be populated with:
+- two Wordpress production pods that will be connected to production database
+and will be accessible via production AWS Load Balancer
+- one Wordpress development pod connected to development database and accessible
+via development AWS Load Balancer
 
 This stack requires to keep Github token and database secrets in AWS Secrets
 Manager. Things to do:
