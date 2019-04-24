@@ -24,6 +24,12 @@ If you're deploying this stack "by hand" comment out "EKSAccessUser" section in
 
 # Automatic deployment
 
+This template is designed to run with
+https://github.com/bigb123/aws-ci-cd-pipeline-github. aws-ci-cd-pipeline-github
+builds AWS Code Pipeline to automatically deploy Kubernetes template on Cloudformation
+when new commit that modifies "eks-wordpress.yaml" file will arrive in
+this repository.
+
 ## Kubernetes initial configuration
 Use this instruction only if you are deploying this stack non-manually.
 
